@@ -33,20 +33,20 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $credentials = $request->validate([
-            'first_name' => ['required'],
-            'last_name' => [],
+            'nama_depan' => ['required'],
+            'nama_belakang' => [],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required'],
             'confirm_password' => ['required', 'same:password'],
         ]);
 
         $user = new User();
-        $user->first_name = $credentials['first_name'];
+        $user->nama_depan = $credentials['nama_depan'];
         $user->email = $credentials['email'];
         $user->password = Hash::make($credentials['password']);
 
-        if ($credentials['last_name']) {
-            $user->last_name = $credentials['last_name'];
+        if ($credentials['nama_belakang']) {
+            $user->nama_belakang = $credentials['nama_belakang'];
         }
 
         $user->saveOrFail();
