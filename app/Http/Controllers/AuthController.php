@@ -21,13 +21,14 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             return response()->json([
-                'message' => 'Login successful',
-            ], 200);
+                "user" => Auth::user(),
+                "token" => $request->session()->getId(),
+            ]);
         }
 
         return response()->json([
             'message' => 'Login failed'
-        ], 300);
+        ], 401);
     }
 
     public function register(Request $request)
