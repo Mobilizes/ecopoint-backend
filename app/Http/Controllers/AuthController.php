@@ -12,22 +12,33 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required']
-        ]);
+        try {
+            $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required']
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Login gagal',
+                'data' => $e->errors(),
+            ], 422);
+        }
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
             return response()->json([
-                "user" => Auth::user(),
-                "token" => $request->session()->getId(),
+                'message' => 'Login sukses',
+                'data' => [
+                    'user' => Auth::user(),
+                    'token' => $request->session()->getId(),
+                ]
             ]);
         }
 
         return response()->json([
-            'message' => 'Login failed'
+            'message' => 'Login gagal',
+            'data' => 'Kredensial tidak ditemukan',
         ], 401);
     }
 
