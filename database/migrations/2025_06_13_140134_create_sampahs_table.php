@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -12,9 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sampahs', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->foreignUuid('id_penukar')->constrained('users');
             $table->string('kategori_sampah');
+            $table->decimal('berat_sampah');
             $table->integer('poin');
             $table->string('link_foto')->nullable();
             $table->timestamps();
