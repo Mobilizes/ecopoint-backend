@@ -34,11 +34,11 @@ class EnsureLogin
 
         [$id, $plain] = explode('|', $token, 2);
 
-        if (!is_numeric($id) || strlen($plain) !== 64) {
+        if (!is_numeric($id) || strlen($plain) !== 48) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Akses dibatasi',
-                'data' => "Format token tidak valid",
+                'data' => strlen($plain),
             ], 401);
         }
 
