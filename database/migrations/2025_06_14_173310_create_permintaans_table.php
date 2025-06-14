@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -12,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penukarans', function (Blueprint $table) {
+        Schema::create('permintaans', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
-            $table->foreignUuid('hadiah_id')->constrained('hadiahs');
-            $table->foreignUuid('user_id')->constrained('users');
+            $table->string('kode_permintaan', 5);
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penukarans');
+        Schema::dropIfExists('permintaans');
     }
 };

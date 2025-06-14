@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return request()->attributes->get('accessToken');
     }
+
+    public function sampahs()
+    {
+        return $this->hasMany(Sampah::class);
+    }
 }

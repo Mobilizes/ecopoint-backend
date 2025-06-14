@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penukaran extends Model
 {
-    //
+    public function hadiah()
+    {
+        return $this->belongsTo(Hadiah::class);
+    }
+
+    public function penukar()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
