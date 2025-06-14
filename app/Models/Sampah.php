@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Sampah extends Model
 {
-    use hasUuids, HasFactory;
+    use HasUuids, HasFactory;
 
     protected $fillable = [
         'user_id',
         'kategori_sampah',
+        'berat_sampah',
         'poin',
     ];
 

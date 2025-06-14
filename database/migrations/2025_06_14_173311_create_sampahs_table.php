@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('sampahs', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
-            $table->foreignUuid('permintaan_id')->constrained('permintaans');
             $table->foreignUuid('user_id')->constrained('users')->nullable();
             $table->enum('kategori_sampah', ['plastik', 'kertas', 'kaca', 'organik', 'logam', 'lainnya']);
             $table->decimal('berat_sampah');

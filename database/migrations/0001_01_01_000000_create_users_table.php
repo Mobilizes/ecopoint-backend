@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_belakang')->nullable();
             $table->string('email')->unique();
             $table->string('password');
+            $table->integer('total_poin')->default(0);
             $table->integer('poin')->default(0);
             $table->string('link_foto')->nullable();
             $table->timestamps();

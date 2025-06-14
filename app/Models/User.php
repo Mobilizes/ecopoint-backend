@@ -25,6 +25,9 @@ class User extends Authenticatable
         'nama_belakang',
         'email',
         'password',
+        'poin',
+        'total_poin',
+        'link_foto',
     ];
 
     /**

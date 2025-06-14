@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hadiah extends Model
 {
-    use hasUuids, HasFactory;
+    use HasUuids, HasFactory;
 
     protected $fillable = [
         'nama_hadiah',

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penukaran extends Model
 {
-    use hasUuids, HasFactory;
+    use HasUuids, HasFactory;
 
     public function hadiah()
     {
