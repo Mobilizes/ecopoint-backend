@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hadiah extends Model
+class Sampah extends Model
 {
     protected $fillable = [
-        'nama_hadiah',
+        'penukar_id',
+        'kategori_sampah',
         'poin',
-        'rating',
-        'jumlah_penukaran',
         'link_foto',
     ];
 }

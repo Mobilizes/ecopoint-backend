@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hadiahs', function (Blueprint $table) {
-            $table->uuid('hadiah_id')->primary();
-            $table->string('nama_hadiah');
-            $table->integer('poin')->default(0);
-            $table->float('rating')->default(0)->check('rating >= 0 and rating <= 5');
-            $table->integer('jumlah_penukaran')->default(0);
+        Schema::create('sampahs', function (Blueprint $table) {
+            $table->uuid('sampah_id')->primary();
+            $table->foreignUuid('penukar_id')->constrained('users');
+            $table->string('kategori_sampah');
+            $table->integer('poin');
             $table->string('link_foto')->nullable();
             $table->timestamps();
         });
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hadiahs');
+        Schema::dropIfExists('sampahs');
     }
 };
