@@ -22,7 +22,7 @@ class AuthenticatedSessionController extends Controller
             return response()->json([
                 'message' => 'Login gagal',
                 'data' => '',
-            ]);
+            ], 401);
         }
 
         return response()->json([

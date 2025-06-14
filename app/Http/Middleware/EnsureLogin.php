@@ -29,7 +29,7 @@ class EnsureLogin
                 'status' => 'failed',
                 'message' => 'Akses dibatasi',
                 'data' => "Format token tidak valid",
-            ], 401);
+            ], 420);
         }
 
         [$id, $plain] = explode('|', $token, 2);
@@ -38,8 +38,8 @@ class EnsureLogin
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Akses dibatasi',
-                'data' => strlen($plain),
-            ], 401);
+                'data' => 'Id token atau panjang token tidak valid',
+            ], 421);
         }
 
         $accessToken = PersonalAccessToken::findToken($token);
