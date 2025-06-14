@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 use App\Models\Hadiah;
+use App\Models\Mesin;
 use App\Models\Penukaran;
 use App\Models\Permintaan;
 use App\Models\Sampah;
@@ -34,10 +35,15 @@ class DatabaseSeeder extends Seeder
             'hadiah_id' => $test_hadiah->id,
         ]);
 
-        $test_permintaan = Permintaan::factory()->create();
+        $test_mesin = Mesin::factory()->create([
+            'nama_mesin' => 'Test Mesin',
+        ]);
+
+        $test_permintaan = Permintaan::factory()->create([
+            'mesin_id' => $test_mesin->id,
+        ]);
 
         $test_sampah = Sampah::factory()->create([
-            'permintaan_id' => $test_permintaan->id,
             'user_id' => $test_user->id,
             'kategori_sampah' => 'kaca',
             'berat_sampah' => 100.0,
@@ -49,12 +55,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         $this->seed_test();
 
-        $users = User::factory()->count(5)->create();
-        $hadiahs = Hadiah::factory()->count(3)->create();
+        $mesins = Mesin::factory()->count(5)->create();
+
+        $users = User::factory()->count(15)->create();
+        $hadiahs = Hadiah::factory()->count(10)->create();
 
         foreach ($users as $user) {
             Penukaran::factory()->count(2)->create([
@@ -63,11 +69,10 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $permintaans = Permintaan::factory()->count(5)->create();
+        $permintaans = Permintaan::factory()->count(10)->create();
 
         foreach ($permintaans as $permintaan) {
             Sampah::factory()->count(3)->create([
-                'permintaan_id' => $permintaan->id,
                 'user_id' => $users->random()->id,
             ]);
         }

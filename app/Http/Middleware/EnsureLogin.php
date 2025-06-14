@@ -56,6 +56,7 @@ class EnsureLogin
 
         $request->setUserResolver(fn() => $user);
         Auth::setUser($user);
+        Auth::guard('web')->setUser($user);
 
         $request->attributes->set('accessToken', $accessToken);
         return $next($request);

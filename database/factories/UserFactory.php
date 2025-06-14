@@ -23,13 +23,16 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $poin = fake()->numberBetween(0, 500);
+
         return [
             'id' => Str::uuid(),
             'nama_depan' => fake()->firstName(),
             'nama_belakang' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-            'poin' => fake()->numberBetween(0, 500),
+            'total_poin' => fake()->numberBetween($poin, $poin + 500),
+            'poin' => $poin,
         ];
     }
 

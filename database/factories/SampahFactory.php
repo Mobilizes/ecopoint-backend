@@ -23,7 +23,6 @@ class SampahFactory extends Factory
     {
         return [
             'id' => Str::uuid(),
-            'permintaan_id' => Permintaan::factory(),
             'user_id' => User::factory(),
             'kategori_sampah' => $this->faker->randomElement(['plastik', 'kertas', 'kaca', 'organik', 'logam', 'lainnya']),
             'berat_sampah' => $this->faker->randomFloat(2, 0.1, 10),

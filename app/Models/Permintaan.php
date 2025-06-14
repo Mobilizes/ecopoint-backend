@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Permintaan extends Model
 {
-    use hasUuids, HasFactory;
+    use HasUuids, HasFactory;
 
     protected $fillable = [
-        'kode_permintaan',
-        'status',
+        'id_mesin',
+        'kode_verifikasi',
     ];
 
     protected static function boot()
@@ -20,8 +20,8 @@ class Permintaan extends Model
         parent::boot();
 
         static::saving(function ($model) {
-            if (isset($model->kode_permintaan) && strlen($model->kode_permintaan) !== 5) {
-                throw new \InvalidArgumentException('kode_permintaan harus sepanjang 5 karakter.');
+            if (isset($model->kode_verifikasi) && strlen($model->kode_verifikasi) !== 5) {
+                throw new \InvalidArgumentException('kode_verifikasi harus sepanjang 5 karakter.');
             }
         });
     }
@@ -29,5 +29,10 @@ class Permintaan extends Model
     public function sampahs()
     {
         return $this->hasMany(Sampah::class);
+    }
+
+    public function mesin()
+    {
+        return $this->belongsTo(Mesin::class);
     }
 }

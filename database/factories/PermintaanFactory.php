@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 use Illuminate\Support\Str;
 
+use App\Models\Mesin;
+use App\Models\Permintaan;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Permintaan>
  */
@@ -18,10 +21,19 @@ class PermintaanFactory extends Factory
      */
     public function definition(): array
     {
+        $id = Str::uuid();
+        do {
+            $otp = $this->faker->numerify(str_repeat('#', 5));
+        } while (
+            Permintaan::where('mesin_id', $id)
+            ->where('kode_verifikasi', $otp)
+            ->exists() || $otp[0] === '0'
+        );
+
         return [
-            'id' => Str::uuid(),
-            'kode_permintaan' => $this->faker->numerify(str_repeat('*', 5)),
-            'status' => fake()->boolean(),
+            'id' => $id,
+            'mesin_id' => Mesin::factory(),
+            'kode_verifikasi' => $otp,
         ];
     }
 }
