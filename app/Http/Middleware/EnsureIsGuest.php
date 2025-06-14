@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class EnsureIsGuest
 {
@@ -17,10 +17,13 @@ class EnsureIsGuest
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (request()->bearerToken()) {
+        $token = $request->bearerToken();
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if ($accessToken) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Akses dibatas',
+                'message' => 'Akses dibatasi',
                 'data' => 'Mohon logout terlebih dahulu',
             ], 401);
         }

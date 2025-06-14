@@ -39,7 +39,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $accessToken = $request->attributes->get('accessToken');
+
+        if ($accessToken) {
+            $accessToken->delete();
+        }
 
         return response()->json([
             'status' => 'success',
