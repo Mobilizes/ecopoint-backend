@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Permintaan extends Model
 {
+    use hasUuids, HasFactory;
+
     protected $fillable = [
         'kode_permintaan',
         'status',
