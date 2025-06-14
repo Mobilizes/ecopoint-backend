@@ -17,8 +17,9 @@ class EnsureIsGuest
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {
+        if (request()->bearerToken()) {
             return response()->json([
+                'status' => 'failed',
                 'message' => 'Akses dibatas',
                 'data' => 'Mohon logout terlebih dahulu',
             ], 401);

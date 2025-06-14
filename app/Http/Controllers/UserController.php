@@ -10,6 +10,7 @@ class UserController extends Controller
     public function me()
     {
         return response()->json([
+            'status' => 'success',
             'message' => 'User data berhasil dikirim',
             'data' => Auth::user(),
         ], 200);

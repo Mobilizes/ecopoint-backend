@@ -3,58 +3,48 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\JsonResponse;
-use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): JsonResponse
+    public function store(Request $request)
     {
-        $request->authenticate();
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-        $user = User::where('email', $request->email)->first();
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json([
+                'message' => 'Login gagal',
+                'data' => '',
+            ]);
+        }
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Berhasil masuk',
+            'message' => 'Login sukses',
             'data' => [
-                'token' => $user->createToken('auth_token')->plainTextToken,
-                'user' => $user,
-            ],
-        ], 200);
+                'user' => Auth::user(),
+                'token' => Auth::user()->createToken('auth_token')->plainTextToken,
+            ]
+        ]);
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): JsonResponse
+    public function destroy(Request $request)
     {
-        Auth::guard('web')->logout();
-
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Berhasil keluar'
-        ], 200);
-    }
-
-    /**
-     * Get the user authenticated by the session.
-     */
-    public function user(Request $request): JsonResponse
-    {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User retrieved successfully',
-            'data' => $request->user(),
-        ], 200);
+            'message' => 'Logout sukses',
+            'data' => ''
+        ]);
     }
 }
