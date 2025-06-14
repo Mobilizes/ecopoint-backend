@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leaderboards', function (Blueprint $table) {
-            $table->id();
+        Schema::create('penukarans', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('id_hadiah')->constrained('hadiahs');
+            $table->foreignUuid('id_user')->constrained('users');
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leaderboards');
+        Schema::dropIfExists('penukarans');
     }
 };
