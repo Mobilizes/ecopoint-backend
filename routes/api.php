@@ -2,12 +2,19 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\UserController;
 
-Route::middleware('web')->group(function () {
-    require __DIR__ . '/api/auth.php';
+use App\Http\Middleware\EnsureIsAuth;
+use App\Http\Middleware\EnsureIsGuest;
 
-    Route::prefix('user')->group(function () {
-        require __DIR__ . '/api/user.php';
-    });
+Route::middleware(EnsureIsGuest::class)->group(function () {
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('/register', [RegisteredUserController::class, 'store']);
 });
 
+Route::middleware(EnsureIsAuth::class)->group(function () {
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+    Route::get('/me', [UserController::class, 'me']);
+});

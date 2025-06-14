@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
@@ -26,11 +25,12 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        $request->session()->regenerate();
-
         return response()->json([
             'message' => 'Login sukses',
-            'data' => Auth::user()
+            'data' => [
+                'user' => Auth::user(),
+                'token' => Auth::user()->createToken('auth_token')->plainTextToken,
+            ]
         ]);
     }
 
@@ -39,12 +39,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
+            'status' => 'success',
             'message' => 'Logout sukses',
             'data' => ''
         ]);
