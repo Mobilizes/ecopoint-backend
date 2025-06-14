@@ -13,4 +13,9 @@ class Hadiah extends Model
         'jumlah_penukaran',
         'link_foto',
     ];
+
+    public function penukarans()
+    {
+        return $this->hasMany(Penukaran::class);
+    }
 }
