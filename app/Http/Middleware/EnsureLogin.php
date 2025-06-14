@@ -24,6 +24,24 @@ class EnsureLogin
             return $next($request);
         }
 
+        if (!str_contains($token, '|')) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Akses dibatasi',
+                'data' => "Format token tidak valid",
+            ], 401);
+        }
+
+        [$id, $plain] = explode('|', $token, 2);
+
+        if (!is_numeric($id) || strlen($plain) !== 64) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Akses dibatasi',
+                'data' => "Format token tidak valid",
+            ], 401);
+        }
+
         $accessToken = PersonalAccessToken::findToken($token);
 
         if (!$accessToken) {
@@ -33,7 +51,6 @@ class EnsureLogin
                 'data' => "Token tidak valid",
             ], 401);
         }
-
 
         $user = $accessToken->tokenable;
 

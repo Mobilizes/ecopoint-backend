@@ -9,10 +9,16 @@ class UserController extends Controller
 {
     public function me()
     {
+        $plain_token = Auth::user()->currentAccessToken()->id . '|';
+        $plain_token = $plain_token . Auth::user()->currentAccessToken()->tokenable_id;
+
         return response()->json([
             'status' => 'success',
             'message' => 'User data berhasil dikirim',
-            'data' => Auth::user(),
+            'data' => [
+                "user" => Auth::user(),
+                "token" => $plain_token,
+            ],
         ], 200);
     }
 }

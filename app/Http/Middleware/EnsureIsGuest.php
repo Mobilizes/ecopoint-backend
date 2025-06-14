@@ -17,7 +17,7 @@ class EnsureIsGuest
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
+        if (Auth::check()) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Akses dibatasi',
