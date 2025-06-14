@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Penukaran extends Model
 {
+    use hasUuids, HasFactory;
+
     public function hadiah()
     {
         return $this->belongsTo(Hadiah::class);
     }
 
-    public function penukar()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

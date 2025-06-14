@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sampah::class);
     }
+
+    public function penukarans()
+    {
+        return $this->hasMany(Penukaran::class);
+    }
 }

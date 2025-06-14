@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Hadiah extends Model
 {
+    use hasUuids, HasFactory;
+
     protected $fillable = [
         'nama_hadiah',
         'poin',

@@ -2,20 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
 use App\Models\Permintaan;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Sampah extends Model
 {
+    use hasUuids, HasFactory;
+
     protected $fillable = [
-        'penukar_id',
+        'user_id',
         'kategori_sampah',
         'poin',
     ];
 
-    public function penukar()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
