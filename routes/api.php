@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaderboardController;
 
@@ -15,6 +15,11 @@ Route::middleware('ensure.guest')->group(function () {
 Route::middleware('ensure.auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
     Route::get('/me', [UserController::class, 'me']);
+
+    Route::prefix('/history')->group(function () {
+        Route::get('/poin', [HistoryController::class, 'poin']);
+        Route::get('/penukaran', [HistoryController::class, 'penukaran']);
+    });
 });
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index']);

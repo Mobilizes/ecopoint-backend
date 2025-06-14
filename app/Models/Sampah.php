@@ -10,7 +10,7 @@ use App\Models\Permintaan;
 class Sampah extends Model
 {
     protected $fillable = [
-        'penukar_id',
+        'user_id',
         'kategori_sampah',
         'poin',
     ];

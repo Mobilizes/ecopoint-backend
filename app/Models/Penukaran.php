@@ -11,7 +11,7 @@ class Penukaran extends Model
         return $this->belongsTo(Hadiah::class);
     }
 
-    public function penukar()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
