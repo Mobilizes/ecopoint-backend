@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -40,8 +39,12 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return response()->json([
+            'status' => 'success',
             'message' => 'Registrasi sukses',
-            'data' => $user
+            'data' => [
+                'user' => $user,
+                'token' => $user->createToken('auth_token')->plainTextToken,
+            ]
         ]);
     }
 }

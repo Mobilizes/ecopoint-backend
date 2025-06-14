@@ -5,22 +5,18 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Laravel\Sanctum\PersonalAccessToken;
 
 use Illuminate\Support\Facades\Auth;
 
 class EnsureIsAuth
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!request()->bearerToken()) {
+        if (!Auth::check()) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Akses dibatas',
+                'message' => 'Akses dibatasi',
                 'data' => 'Mohon login terlebih dahulu',
             ], 401);
         }
