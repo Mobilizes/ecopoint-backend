@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Sampah;
 use Illuminate\Support\Facades\Auth;
 
-class SampahController extends Controller
+class TransaksiController extends Controller
 {
     /**
      * Display a listing of the resource.
