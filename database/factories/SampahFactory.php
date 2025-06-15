@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 use App\Models\Permintaan;
+use App\Models\Transaksi;
 use App\Models\User;
 
 /**
@@ -23,7 +24,7 @@ class SampahFactory extends Factory
     {
         return [
             'id' => Str::uuid(),
-            'user_id' => User::factory(),
+            'transaksi_id' => Transaksi::factory(),
             'kategori_sampah' => $this->faker->randomElement(['plastik', 'kertas', 'kaca', 'organik', 'logam', 'lainnya']),
             'berat_sampah' => $this->faker->randomFloat(2, 0.1, 10),
             'poin' => $this->faker->numberBetween(1, 50),

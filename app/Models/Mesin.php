@@ -14,8 +14,13 @@ class Mesin extends Model
         'nama_mesin',
     ];
 
-    public function permintaan()
+    public function permintaans()
     {
         return $this->hasMany(Permintaan::class);
+    }
+
+    public function transaksis()
+    {
+        return $this->hasMany(Transaksi::class);
     }
 }

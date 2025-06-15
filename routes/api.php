@@ -7,6 +7,7 @@ use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\PenukaranController;
 use App\Http\Controllers\SampahController;
 
 Route::middleware('ensure.guest')->group(function () {
@@ -18,11 +19,11 @@ Route::middleware('ensure.auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
     Route::get('/me', [UserController::class, 'me']);
 
-    Route::prefix('/history')->group(function () {
-        Route::get('/poin', [HistoryController::class, 'poin']);
-        Route::get('/penukaran', [HistoryController::class, 'penukaran']);
-    });
+    Route::get('/penukaran', [PenukaranController::class, 'index']);
+    Route::get('/penukaran/{id}', [PenukaranController::class, 'show']);
+    Route::get('/penukaran/hadiah/{id}', [PenukaranController::class, 'showHadiah']);
 
+    Route::get('/poin', [SampahController::class, 'index']);
     Route::get('/poin/{id}', [SampahController::class, 'show']);
 
     Route::post('/claim', [ClaimController::class, 'claims']);

@@ -10,6 +10,7 @@ use App\Models\Mesin;
 use App\Models\Penukaran;
 use App\Models\Permintaan;
 use App\Models\Sampah;
+use App\Models\Transaksi;
 use App\Models\User;
 
 class DatabaseSeeder extends Seeder
@@ -43,8 +44,13 @@ class DatabaseSeeder extends Seeder
             'mesin_id' => $test_mesin->id,
         ]);
 
-        $test_sampah = Sampah::factory()->create([
+        $test_transaksi = Transaksi::factory()->create([
+            'mesin_id' => $test_mesin->id,
             'user_id' => $test_user->id,
+        ]);
+
+        $test_sampah = Sampah::factory()->create([
+            'transaksi_id' => $test_transaksi->id,
             'kategori_sampah' => 'kaca',
             'berat_sampah' => 100.0,
         ]);
@@ -71,9 +77,14 @@ class DatabaseSeeder extends Seeder
 
         $permintaans = Permintaan::factory()->count(10)->create();
 
-        foreach ($permintaans as $permintaan) {
+        $transaksis = Transaksi::factory()->count(20)->create([
+            'mesin_id' => $mesins->random()->id,
+            'user_id' => $users->random()->id,
+        ]);
+
+        foreach ($transaksis as $transaksi) {
             Sampah::factory()->count(3)->create([
-                'user_id' => $users->random()->id,
+                'transaksi_id' => $transaksi->id,
             ]);
         }
     }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Permintaan;
+use App\Models\Transaksi;
 
 class ClaimController extends Controller
 {
@@ -45,8 +46,13 @@ class ClaimController extends Controller
 
         $user = Auth::user();
 
+        $transaksi = new Transaksi();
+        $transaksi->mesin_id = $request->mesin_id;
+        $transaksi->user_id = $user->id;
+
         foreach ($request->sampahs as $sampah) {
             $user->sampahs()->create([
+                'transaksi_id' => $transaksi->id,
                 'kategori_sampah' => $sampah['kategori_sampah'],
                 'berat_sampah' => $sampah['berat_sampah'],
                 'poin' => $sampah['poin'],
