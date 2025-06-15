@@ -19,7 +19,7 @@ class PenukaranController extends Controller
             function ($penukaran) {
                 return [
                     'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
-                    'jam_penukaran' => $penukaran->created_at->format('H:i'),
+                    'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
                     'status' => $penukaran->status,
                     'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
                     'poin_ditukar' => $penukaran->hadiah->poin,
@@ -73,7 +73,7 @@ class PenukaranController extends Controller
             'message' => 'Berhasil mendapatkan detail penukaran hadiah',
             'data' => [
                 'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
-                'jam_penukaran' => $penukaran->created_at->format('H:i'),
+                'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
                 'status' => $penukaran->status,
                 'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
                 'poin_ditukar' => $penukaran->hadiah->poin,

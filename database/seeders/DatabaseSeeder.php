@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
             'transaksi_id' => $test_transaksi->id,
             'kategori_sampah' => 'kaca',
             'berat_sampah' => 100.0,
+            'poin' => 10,
         ]);
     }
 

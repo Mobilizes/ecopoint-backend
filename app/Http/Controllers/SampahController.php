@@ -16,7 +16,17 @@ class SampahController extends Controller
     {
         $user = Auth::user();
 
-        $transaksis = $user->transaksis()->get();
+        $transaksis = $user->transaksis()->with(['mesin', 'sampahs'])->get()->map(
+            function ($transaksi) {
+                return [
+                    'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
+                    'jam_penukaran' => $transaksi->created_at->translatedFormat('H:i'),
+                    'nama_mesin' => $transaksi->mesin->nama_mesin,
+                    'total_poin' => $transaksi->total_poin,
+                    'sampah' => $transaksi->sampahs,
+                ];
+            }
+        );
 
         return response()->json([
             'status' => 'success',
@@ -47,20 +57,6 @@ class SampahController extends Controller
     public function show(string $id)
     {
         $user = Auth::user();
-        $sampah = Sampah::find($id)::where('user_id', $user->id)->first();
-        if ($sampah == null) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Sampah tidak ditemukan',
-                'data' => '',
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Sampah ditemukan',
-            'data' => $sampah,
-        ], 200);
     }
 
     /**
