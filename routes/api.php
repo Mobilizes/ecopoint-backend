@@ -7,11 +7,7 @@ use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaderboardController;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
-use App\Models\Permintaan;
+use App\Http\Controllers\SampahController;
 
 Route::middleware('ensure.guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
@@ -26,6 +22,8 @@ Route::middleware('ensure.auth')->group(function () {
         Route::get('/poin', [HistoryController::class, 'poin']);
         Route::get('/penukaran', [HistoryController::class, 'penukaran']);
     });
+
+    Route::get('/poin/{id}', [SampahController::class, 'show']);
 
     Route::post('/claim', [ClaimController::class, 'claims']);
 });
