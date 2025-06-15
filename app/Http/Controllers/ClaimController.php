@@ -10,7 +10,7 @@ use App\Models\Transaksi;
 
 class ClaimController extends Controller
 {
-    public function claims(Request $request)
+    public function claim(Request $request)
     {
         $request->validate([
             'id_mesin' => 'required|uuid|exists:mesins,id',
