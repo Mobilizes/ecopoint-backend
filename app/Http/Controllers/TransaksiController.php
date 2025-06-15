@@ -20,7 +20,7 @@ class TransaksiController extends Controller
             function ($transaksi) {
                 return [
                     'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
-                    'jam_penukaran' => $transaksi->created_at->translatedFormat('H:i'),
+                    'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
                     'nama_mesin' => $transaksi->mesin->nama_mesin,
                     'total_poin' => $transaksi->total_poin,
                     'sampah' => $transaksi->sampahs,
@@ -30,7 +30,7 @@ class TransaksiController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data sampah berhasil diambil',
+            'message' => 'Daftar transaksi berhasil diambil',
             'data' => $transaksis,
         ]);
     }
@@ -57,6 +57,27 @@ class TransaksiController extends Controller
     public function show(string $id)
     {
         $user = Auth::user();
+        $transaksi = $user->transaksis()->with('sampahs')
+            ->where('id', $id)
+            ->first();
+
+        if ($transaksi == null) {
+            $data = [];
+        } else {
+            $data = [
+                'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
+                'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
+                'nama_mesin' => $transaksi->mesin->nama_mesin,
+                'total_poin' => $transaksi->total_poin,
+                'sampah' => $transaksi->sampahs,
+            ];
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Detail transaksi berhasil diambil',
+            'data' => $data,
+        ], 200);
     }
 
     /**

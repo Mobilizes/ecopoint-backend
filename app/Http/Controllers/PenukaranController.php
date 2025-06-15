@@ -68,17 +68,23 @@ class PenukaranController extends Controller
             ->where('id', $id)
             ->first();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Berhasil mendapatkan detail penukaran hadiah',
-            'data' => [
+        if ($penukaran == null) {
+            $data = [];
+        } else {
+            $data = [
                 'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
                 'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
                 'status' => $penukaran->status,
                 'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
                 'poin_ditukar' => $penukaran->hadiah->poin,
                 'gambar_hadiah' => $penukaran->hadiah->link_foto,
-            ],
+            ];
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Berhasil mendapatkan detail penukaran hadiah',
+            'data' => $data,
         ], 200);
     }
 
