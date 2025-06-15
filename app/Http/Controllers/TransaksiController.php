@@ -19,6 +19,7 @@ class TransaksiController extends Controller
         $transaksis = $user->transaksis()->with(['mesin', 'sampahs'])->get()->map(
             function ($transaksi) {
                 return [
+                    'id' => $transaksi->id,
                     'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
                     'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
                     'nama_mesin' => $transaksi->mesin->nama_mesin,
@@ -65,6 +66,7 @@ class TransaksiController extends Controller
             $data = [];
         } else {
             $data = [
+                'id' => $transaksi->id,
                 'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
                 'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
                 'nama_mesin' => $transaksi->mesin->nama_mesin,

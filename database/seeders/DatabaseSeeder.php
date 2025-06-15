@@ -23,38 +23,40 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $test_hadiah = Hadiah::factory()->create([
+        $test_hadiahs = Hadiah::factory(10)->create([
             'nama_hadiah' => 'Test Hadiah',
-            'poin' => 10,
-            'rating' => 5,
-            'jumlah_penukaran' => 10,
-            'link_foto' => 'https://example.com/test-hadiah.jpg',
         ]);
 
-        $test_penukaran = Penukaran::factory()->create([
-            'user_id' => $test_user->id,
-            'hadiah_id' => $test_hadiah->id,
-        ]);
+        foreach ($test_hadiahs as $test_hadiah) {
+            $test_penukaran = Penukaran::factory(5)->create([
+                'user_id' => $test_user->id,
+                'hadiah_id' => $test_hadiah->id,
+            ]);
+        }
 
-        $test_mesin = Mesin::factory()->create([
+        $test_mesins = Mesin::factory(3)->create([
             'nama_mesin' => 'Test Mesin',
         ]);
 
-        $test_permintaan = Permintaan::factory()->create([
-            'mesin_id' => $test_mesin->id,
-        ]);
+        foreach ($test_mesins as $test_mesin) {
+            $test_permintaan = Permintaan::factory(5)->create([
+                'mesin_id' => $test_mesin->id,
+            ]);
 
-        $test_transaksi = Transaksi::factory()->create([
-            'mesin_id' => $test_mesin->id,
-            'user_id' => $test_user->id,
-        ]);
+            $test_transaksis = Transaksi::factory(10)->create([
+                'mesin_id' => $test_mesin->id,
+                'user_id' => $test_user->id,
+            ]);
 
-        $test_sampah = Sampah::factory()->create([
-            'transaksi_id' => $test_transaksi->id,
-            'kategori_sampah' => 'kaca',
-            'berat_sampah' => 100.0,
-            'poin' => 10,
-        ]);
+            foreach ($test_transaksis as $transaksi) {
+                $test_sampah = Sampah::factory(2)->create([
+                    'transaksi_id' => $transaksi->id,
+                    'kategori_sampah' => 'kaca',
+                    'berat_sampah' => 100.0,
+                    'poin' => 10,
+                ]);
+            }
+        }
     }
 
     /**
