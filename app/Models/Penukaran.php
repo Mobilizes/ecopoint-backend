@@ -10,6 +10,12 @@ class Penukaran extends Model
 {
     use HasUuids, HasFactory;
 
+    protected $fillable = [
+        'hadiah_id',
+        'user_id',
+        'status',
+    ];
+
     public function hadiah()
     {
         return $this->belongsTo(Hadiah::class);
