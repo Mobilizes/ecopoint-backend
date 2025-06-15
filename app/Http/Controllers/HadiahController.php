@@ -4,20 +4,48 @@ namespace App\Http\Controllers;
 
 use App\Models\Hadiah;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class HadiahController extends Controller
 {
     public function index(Request $request)
     {
-        $limit = $request->limit ?? 1;
+        $query = Hadiah::query();
 
-        $hadiahs = Hadiah::simplePaginate($limit);
+        $hadiahs = $request->filled('limit')
+            ? $query->simplePaginate($request->limit)->items()
+            : $query->get();
+
+        if ($hadiahs == null) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Daftar hadiah kosong',
+                'data' => (object) []
+            ]);
+        }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data hadiah berhasil diambil',
+            'message' => 'Daftar hadiah berhasil diambil',
             'data' => $hadiahs
+        ]);
+    }
+
+    public function show(string $id)
+    {
+        $hadiah = Hadiah::find($id);
+
+        if ($hadiah == null) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Detail hadiah tidak ditemukan',
+                'data' => (object) [],
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Detail hadiah berhasil diambil',
+            'data' => $hadiah
         ]);
     }
 }
