@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ClaimController;
+use App\Http\Controllers\HadiahController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaderboardController;
@@ -26,7 +27,9 @@ Route::middleware('ensure.auth')->group(function () {
     Route::get('/poin', [TransaksiController::class, 'index']);
     Route::get('/poin/{id}', [TransaksiController::class, 'show']);
 
-    Route::post('/claim', [ClaimController::class, 'claims']);
+    Route::post('/claim', [ClaimController::class, 'claim']);
 });
+
+Route::get('/hadiah', [HadiahController::class, 'index']);
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index']);
