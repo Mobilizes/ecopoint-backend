@@ -31,5 +31,6 @@ Route::middleware('ensure.auth')->group(function () {
 });
 
 Route::get('/hadiah', [HadiahController::class, 'index']);
+Route::get('/hadiah/{id}', [HadiahController::class, 'show']);
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index']);

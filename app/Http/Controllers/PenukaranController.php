@@ -11,35 +11,40 @@ class PenukaranController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        $penukarans = $user->penukarans()->with('hadiah')->get()->map(
-            function ($penukaran) {
-                return [
-                    'id' => $penukaran->id,
-                    'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
-                    'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
-                    'status' => $penukaran->status,
-                    'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
-                    'poin_ditukar' => $penukaran->hadiah->poin,
-                    'gambar_hadiah' => $penukaran->hadiah->link_foto,
-                ];
-            }
-        );
+        $penukaransQuery = $user->penukarans()->with('hadiah');
 
-        $sum = $penukarans->sum(function ($p) {
-            return $p['poin_ditukar'] ?? 0;
+        $penukarans = $request->filled('limit') && $request->filled('page')
+            ? $penukaransQuery->simplePaginate($request->limit)
+            : $penukaransQuery->get();
+
+        if ($penukarans == null) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Daftar penukaran hadiah kosong',
+                'data' => [],
+            ], 200);
+        }
+
+        $penukarans = $penukarans->map(function ($penukaran) {
+            return [
+                'id' => $penukaran->id,
+                'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
+                'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
+                'status' => $penukaran->status,
+                'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
+                'poin_ditukar' => $penukaran->hadiah->poin,
+                'gambar_hadiah' => $penukaran->hadiah->link_foto,
+            ];
         });
 
         return response()->json([
             'status' => 'success',
             'message' => 'Berhasil mendapatkan daftar penukaran hadiah',
-            'data' => [
-                'penukaran' => $penukarans,
-                'poin' => $sum,
-            ],
+            'data' => $penukarans,
         ]);
     }
 
@@ -70,18 +75,22 @@ class PenukaranController extends Controller
             ->first();
 
         if ($penukaran == null) {
-            $data = [];
-        } else {
-            $data = [
-                'id' => $penukaran->id,
-                'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
-                'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
-                'status' => $penukaran->status,
-                'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
-                'poin_ditukar' => $penukaran->hadiah->poin,
-                'gambar_hadiah' => $penukaran->hadiah->link_foto,
-            ];
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Detail penukaran hadiah tidak ditemukan',
+                'data' => (object) [],
+            ], 200);
         }
+
+        $data = [
+            'id' => $penukaran->id,
+            'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
+            'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
+            'status' => $penukaran->status,
+            'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
+            'poin_ditukar' => $penukaran->hadiah->poin,
+            'gambar_hadiah' => $penukaran->hadiah->link_foto,
+        ];
 
         return response()->json([
             'status' => 'success',

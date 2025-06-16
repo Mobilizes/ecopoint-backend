@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $test_hadiahs = Hadiah::factory(10)->create([
+        $test_hadiahs = Hadiah::factory(100)->create([
             'nama_hadiah' => 'Test Hadiah',
         ]);
 

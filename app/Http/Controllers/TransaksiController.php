@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Sampah;
 use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
@@ -12,22 +11,34 @@ class TransaksiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        $transaksis = $user->transaksis()->with(['mesin', 'sampahs'])->get()->map(
-            function ($transaksi) {
-                return [
-                    'id' => $transaksi->id,
-                    'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
-                    'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
-                    'nama_mesin' => $transaksi->mesin->nama_mesin,
-                    'total_poin' => $transaksi->total_poin,
-                    'sampah' => $transaksi->sampahs,
-                ];
-            }
-        );
+        $transaksisQuery = $user->transaksis()->with(['mesin', 'sampahs']);
+
+        $transaksis = $request->filled('limit')
+            ? $transaksisQuery->simplePaginate($request->limit)
+            : $transaksisQuery->get();
+
+        $transaksis = $transaksis->map(function ($transaksi) {
+            return [
+                'id' => $transaksi->id,
+                'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
+                'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
+                'nama_mesin' => $transaksi->mesin->nama_mesin,
+                'total_poin' => $transaksi->total_poin,
+                'sampah' => $transaksi->sampahs,
+            ];
+        });
+
+        if ($transaksis == null) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Daftar transaksi kosong',
+                'data' => [],
+            ], 200);
+        }
 
         return response()->json([
             'status' => 'success',
@@ -63,17 +74,21 @@ class TransaksiController extends Controller
             ->first();
 
         if ($transaksi == null) {
-            $data = [];
-        } else {
-            $data = [
-                'id' => $transaksi->id,
-                'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
-                'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
-                'nama_mesin' => $transaksi->mesin->nama_mesin,
-                'total_poin' => $transaksi->total_poin,
-                'sampah' => $transaksi->sampahs,
-            ];
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Detail transaksi tidak ditemukan',
+                'data' => (object) [],
+            ], 200);
         }
+
+        $data = [
+            'id' => $transaksi->id,
+            'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
+            'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
+            'nama_mesin' => $transaksi->mesin->nama_mesin,
+            'total_poin' => $transaksi->total_poin,
+            'sampah' => $transaksi->sampahs,
+        ];
 
         return response()->json([
             'status' => 'success',
