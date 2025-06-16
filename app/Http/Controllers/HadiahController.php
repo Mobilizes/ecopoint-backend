@@ -57,7 +57,7 @@ class HadiahController extends Controller
                 'status' => 'success',
                 'message' => 'Detail hadiah tidak ditemukan',
                 'data' => (object) [],
-            ]);
+            ], 200);
         }
 
         return response()->json([
@@ -69,11 +69,21 @@ class HadiahController extends Controller
 
     public function search(Request $request)
     {
-        $hadiahs = Hadiah::where('nama_hadiah', 'like', "%$request->nama%");
+        $query = Hadiah::where('nama_hadiah', 'like', "%{$request["nama"]}%");
 
         $hadiahs = $request->filled('limit')
-            ? $hadiahs->simplePaginate($request->limit)->items()
-            : $hadiahs->get();
+            ? $query->simplePaginate($request->limit)
+            : $query->get();
+
+        $meta = $request->filled('limit') ? [
+            'current_page' => $hadiahs->currentPage(),
+            'from' => $hadiahs->firstItem(),
+            'per_page' => $hadiahs->perPage(),
+            'to' => $hadiahs->lastItem(),
+            'next_page_url' => $hadiahs->nextPageUrl(),
+            'prev_page_url' => $hadiahs->previousPageUrl(),
+            'path' => $hadiahs->path(),
+        ] : null;
 
         if ($hadiahs == null) {
             return response()->json([
@@ -83,10 +93,18 @@ class HadiahController extends Controller
             ], 200);
         }
 
-        return response()->json([
+        $hadiahs = $meta !== null ? $hadiahs->items() : $hadiahs;
+
+        $response = [
             'status' => 'success',
-            'message' => 'Daftar hadiah yang dicari berhasil diambil',
+            'message' => 'Daftar hadiah berhasil diambil',
             'data' => $hadiahs
-        ]);
+        ];
+
+        if ($meta !== null) {
+            $response['meta'] = $meta;
+        }
+
+        return response()->json($response);
     }
 }
