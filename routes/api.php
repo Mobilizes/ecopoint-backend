@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\HadiahController;
-use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\PenukaranController;
@@ -31,6 +30,7 @@ Route::middleware('ensure.auth')->group(function () {
 });
 
 Route::get('/hadiah', [HadiahController::class, 'index']);
+Route::get('/hadiah/search', [HadiahController::class, 'search']);
 Route::get('/hadiah/{id}', [HadiahController::class, 'show']);
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index']);

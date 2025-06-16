@@ -15,11 +15,21 @@ class PenukaranController extends Controller
     {
         $user = Auth::user();
 
-        $penukaransQuery = $user->penukarans()->with('hadiah');
+        $query = $user->penukarans();
 
-        $penukarans = $request->filled('limit') && $request->filled('page')
-            ? $penukaransQuery->simplePaginate($request->limit)
-            : $penukaransQuery->get();
+        $penukarans = $request->filled('limit')
+            ? $query->simplePaginate($request->limit)
+            : $query->get();
+
+        $meta = $request->filled('limit') ? [
+            'current_page' => $penukarans->currentPage(),
+            'from' => $penukarans->firstItem(),
+            'per_page' => $penukarans->perPage(),
+            'to' => $penukarans->lastItem(),
+            'next_page_url' => $penukarans->nextPageUrl(),
+            'prev_page_url' => $penukarans->previousPageUrl(),
+            'path' => $penukarans->path(),
+        ] : null;
 
         if ($penukarans == null) {
             return response()->json([
@@ -41,11 +51,17 @@ class PenukaranController extends Controller
             ];
         });
 
-        return response()->json([
+        $response = [
             'status' => 'success',
-            'message' => 'Berhasil mendapatkan daftar penukaran hadiah',
-            'data' => $penukarans,
-        ]);
+            'message' => 'Daftar hadiah berhasil diambil',
+            'data' => $penukarans
+        ];
+
+        if ($meta !== null) {
+            $response['meta'] = $meta;
+        }
+
+        return response()->json($response);
     }
 
     /**

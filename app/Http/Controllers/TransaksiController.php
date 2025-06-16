@@ -15,11 +15,29 @@ class TransaksiController extends Controller
     {
         $user = Auth::user();
 
-        $transaksisQuery = $user->transaksis()->with(['mesin', 'sampahs']);
+        $query = $user->transaksis()->with(['mesin', 'sampahs']);
 
         $transaksis = $request->filled('limit')
-            ? $transaksisQuery->simplePaginate($request->limit)
-            : $transaksisQuery->get();
+            ? $query->simplePaginate($request->limit)
+            : $query->get();
+
+        $meta = $request->filled('limit') ? [
+            'current_page' => $transaksis->currentPage(),
+            'from' => $transaksis->firstItem(),
+            'per_page' => $transaksis->perPage(),
+            'to' => $transaksis->lastItem(),
+            'next_page_url' => $transaksis->nextPageUrl(),
+            'prev_page_url' => $transaksis->previousPageUrl(),
+            'path' => $transaksis->path(),
+        ] : null;
+
+        if ($transaksis == null) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Daftar transaksi kosong',
+                'data' => [],
+            ], 200);
+        }
 
         $transaksis = $transaksis->map(function ($transaksi) {
             return [
@@ -32,19 +50,17 @@ class TransaksiController extends Controller
             ];
         });
 
-        if ($transaksis == null) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Daftar transaksi kosong',
-                'data' => [],
-            ], 200);
+        $response = [
+            'status' => 'success',
+            'message' => 'Daftar hadiah berhasil diambil',
+            'data' => $transaksis
+        ];
+
+        if ($meta !== null) {
+            $response['meta'] = $meta;
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Daftar transaksi berhasil diambil',
-            'data' => $transaksis,
-        ]);
+        return response()->json($response);
     }
 
     /**
