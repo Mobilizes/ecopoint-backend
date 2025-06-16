@@ -22,6 +22,7 @@ class PenukaranFactory extends Factory
         return [
             'hadiah_id' => Hadiah::factory(),
             'user_id' => User::factory(),
+            'alamat' => fake()->address(),
         ];
     }
 }

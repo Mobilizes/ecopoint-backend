@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\HadiahController;
 use App\Http\Controllers\UserController;
@@ -27,6 +28,11 @@ Route::middleware('ensure.auth')->group(function () {
     Route::get('/poin/{id}', [TransaksiController::class, 'show']);
 
     Route::post('/claim', [ClaimController::class, 'claim']);
+
+    Route::get('/cart', [CartController::class, 'show']);
+    Route::post('/cart/add', [CartController::class, 'store']);
+    Route::post('/cart/remove', [CartController::class, 'destroy']);
+    Route::post('/cart/checkout', [CartController::class, 'checkout']);
 });
 
 Route::get('/hadiah', [HadiahController::class, 'index']);

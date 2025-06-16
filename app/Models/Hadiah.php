@@ -22,4 +22,11 @@ class Hadiah extends Model
     {
         return $this->hasMany(Penukaran::class);
     }
+
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class, 'cart_hadiah')
+            ->withPivot('kuantitas')
+            ->withTimestamps();
+    }
 }

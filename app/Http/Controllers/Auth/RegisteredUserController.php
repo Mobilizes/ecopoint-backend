@@ -42,7 +42,7 @@ class RegisteredUserController extends Controller
             'status' => 'success',
             'message' => 'Registrasi sukses',
             'data' => [
-                'user' => $user,
+                'user' => User::find($user->id),
                 'token' => $user->createToken('auth_token')->plainTextToken,
             ]
         ]);

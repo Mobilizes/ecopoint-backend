@@ -13,6 +13,7 @@ class Penukaran extends Model
     protected $fillable = [
         'hadiah_id',
         'user_id',
+        'alamat',
         'status',
     ];
 

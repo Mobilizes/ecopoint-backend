@@ -23,9 +23,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $test_hadiahs = Hadiah::factory(100)->create([
-            'nama_hadiah' => 'Test Hadiah',
-        ]);
+        $test_hadiahs = Hadiah::factory(100)->create([]);
 
         foreach ($test_hadiahs as $test_hadiah) {
             $test_penukaran = Penukaran::factory(5)->create([
@@ -34,9 +32,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $test_mesins = Mesin::factory(3)->create([
-            'nama_mesin' => 'Test Mesin',
-        ]);
+        $test_mesins = Mesin::factory(3)->create([]);
 
         foreach ($test_mesins as $test_mesin) {
             $test_permintaan = Permintaan::factory(5)->create([

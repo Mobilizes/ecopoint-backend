@@ -18,7 +18,7 @@ class PenukaranController extends Controller
         $query = $user->penukarans();
 
         $penukarans = $request->filled('limit')
-            ? $query->simplePaginate($request->limit)
+            ? $query->paginate($request->limit)
             : $query->get();
 
         $meta = $request->filled('limit') ? [

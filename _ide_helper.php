@@ -23343,10 +23343,10 @@ namespace  {
          * @return \Illuminate\Contracts\Pagination\Paginator 
          * @static 
          */
-        public static function simplePaginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
+        public static function paginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
         {
             /** @var \Illuminate\Database\Eloquent\Builder $instance */
-            return $instance->simplePaginate($perPage, $columns, $pageName, $page);
+            return $instance->paginate($perPage, $columns, $pageName, $page);
         }
 
         /**

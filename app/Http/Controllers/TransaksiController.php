@@ -18,7 +18,7 @@ class TransaksiController extends Controller
         $query = $user->transaksis()->with(['mesin', 'sampahs']);
 
         $transaksis = $request->filled('limit')
-            ? $query->simplePaginate($request->limit)
+            ? $query->paginate($request->limit)
             : $query->get();
 
         $meta = $request->filled('limit') ? [
