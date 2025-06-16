@@ -18,17 +18,14 @@ class PenukaranController extends Controller
         $query = $user->penukarans();
 
         $penukarans = $request->filled('limit')
-            ? $query->simplePaginate($request->limit)
+            ? $query->paginate($request->limit)
             : $query->get();
 
         $meta = $request->filled('limit') ? [
-            'current_page' => $penukarans->currentPage(),
-            'from' => $penukarans->firstItem(),
+            'page' => $penukarans->currentPage(),
             'per_page' => $penukarans->perPage(),
-            'to' => $penukarans->lastItem(),
-            'next_page_url' => $penukarans->nextPageUrl(),
-            'prev_page_url' => $penukarans->previousPageUrl(),
-            'path' => $penukarans->path(),
+            'max_page' => $penukarans->lastPage(),
+            'count' => $penukarans->total(),
         ] : null;
 
         if ($penukarans == null) {
