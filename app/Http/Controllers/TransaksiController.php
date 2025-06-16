@@ -18,17 +18,14 @@ class TransaksiController extends Controller
         $query = $user->transaksis()->with(['mesin', 'sampahs']);
 
         $transaksis = $request->filled('limit')
-            ? $query->simplePaginate($request->limit)
+            ? $query->paginate($request->limit)
             : $query->get();
 
         $meta = $request->filled('limit') ? [
-            'current_page' => $transaksis->currentPage(),
-            'from' => $transaksis->firstItem(),
+            'page' => $transaksis->currentPage(),
             'per_page' => $transaksis->perPage(),
-            'to' => $transaksis->lastItem(),
-            'next_page_url' => $transaksis->nextPageUrl(),
-            'prev_page_url' => $transaksis->previousPageUrl(),
-            'path' => $transaksis->path(),
+            'max_page' => $transaksis->lastPage(),
+            'count' => $transaksis->total(),
         ] : null;
 
         if ($transaksis == null) {
