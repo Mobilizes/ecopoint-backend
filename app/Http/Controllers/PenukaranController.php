@@ -18,6 +18,7 @@ class PenukaranController extends Controller
         $penukarans = $user->penukarans()->with('hadiah')->get()->map(
             function ($penukaran) {
                 return [
+                    'id' => $penukaran->id,
                     'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
                     'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
                     'status' => $penukaran->status,
@@ -72,6 +73,7 @@ class PenukaranController extends Controller
             $data = [];
         } else {
             $data = [
+                'id' => $penukaran->id,
                 'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
                 'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
                 'status' => $penukaran->status,
