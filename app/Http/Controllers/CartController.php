@@ -125,6 +125,33 @@ class CartController extends Controller
     public function checkout()
     {
         $user = Auth::user();
-        $cart = $user->cart()->firstOrFail();
+        $cart = $user->cart()->firstOrCreate();
+
+        if ($cart->hadiahs()->get()->isEmpty()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Keranjang kosong!',
+                'data' => (object) [],
+            ], 400);
+        }
+
+        if ($user->poin < $cart->totalPoin()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Poin yang dimiliki tidak mencukupi!',
+                'data' => (object) [],
+            ], 400);
+        }
+
+        $user->poin -= $cart->totalPoin();
+        $user->save();
+
+        $user->cart->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Checkout sukses',
+            'data' => (object) [],
+        ]);
     }
 }

@@ -24,6 +24,8 @@ class Cart extends Model
 
     public function totalPoin()
     {
-        return $this->hadiahs->sum('poin');
+        return $this->hadiahs->sum(function ($hadiah) {
+            return $hadiah->pivot->kuantitas * $hadiah->poin;
+        });
     }
 }
