@@ -42,7 +42,7 @@ class PenukaranController extends Controller
                 'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
                 'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
                 'status' => $penukaran->status,
-                'penukarans' => $penukaran->hadiahs,
+                'hadiahs' => $penukaran->hadiahs,
                 'poin_ditukar' => $penukaran->totalPoin(),
             ];
         });
@@ -82,7 +82,7 @@ class PenukaranController extends Controller
     public function show(string $id)
     {
         $user = Auth::user();
-        $penukaran = $user->penukarans()->with('hadiah')
+        $penukaran = $user->penukarans()->with('hadiahs')
             ->where('id', $id)
             ->first();
 
@@ -99,9 +99,8 @@ class PenukaranController extends Controller
             'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
             'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
             'status' => $penukaran->status,
-            'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
-            'poin_ditukar' => $penukaran->hadiah->poin,
-            'gambar_hadiah' => $penukaran->hadiah->link_foto,
+            'hadiahs' => $penukaran->hadiahs,
+            'poin_ditukar' => $penukaran->totalPoin(),
         ];
 
         return response()->json([
