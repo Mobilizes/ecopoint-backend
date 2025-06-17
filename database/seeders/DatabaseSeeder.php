@@ -25,11 +25,18 @@ class DatabaseSeeder extends Seeder
 
         $test_hadiahs = Hadiah::factory(100)->create([]);
 
-        foreach ($test_hadiahs as $test_hadiah) {
-            $test_penukaran = Penukaran::factory(5)->create([
-                'user_id' => $test_user->id,
-                'hadiah_id' => $test_hadiah->id,
-            ]);
+        $test_penukaran = Penukaran::factory(5)->create([
+            'user_id' => $test_user->id,
+        ]);
+
+        foreach ($test_penukaran as $penukaran) {
+            $hadiahs = $test_hadiahs->random(rand(1, 5));
+
+            foreach ($hadiahs as $hadiah) {
+                $penukaran->hadiahs()->attach([
+                    'hadiah_id' => $hadiah->id,
+                ]);
+            }
         }
 
         $test_mesins = Mesin::factory(3)->create([]);
@@ -62,29 +69,28 @@ class DatabaseSeeder extends Seeder
     {
         $this->seed_test();
 
-        $mesins = Mesin::factory()->count(5)->create();
-
-        $users = User::factory()->count(15)->create();
-        $hadiahs = Hadiah::factory()->count(10)->create();
-
-        foreach ($users as $user) {
-            Penukaran::factory()->count(2)->create([
-                'user_id' => $user->id,
-                'hadiah_id' => $hadiahs->random()->id,
-            ]);
-        }
-
-        $permintaans = Permintaan::factory()->count(10)->create();
-
-        $transaksis = Transaksi::factory()->count(20)->create([
-            'mesin_id' => $mesins->random()->id,
-            'user_id' => $users->random()->id,
-        ]);
-
-        foreach ($transaksis as $transaksi) {
-            Sampah::factory()->count(3)->create([
-                'transaksi_id' => $transaksi->id,
-            ]);
-        }
+        /* $mesins = Mesin::factory()->count(5)->create(); */
+        /**/
+        /* $users = User::factory()->count(15)->create(); */
+        /* $hadiahs = Hadiah::factory()->count(10)->create(); */
+        /**/
+        /* foreach ($users as $user) { */
+        /*     Penukaran::factory()->count(2)->create([ */
+        /*         'user_id' => $user->id, */
+        /*     ]); */
+        /* } */
+        /**/
+        /* $permintaans = Permintaan::factory()->count(10)->create(); */
+        /**/
+        /* $transaksis = Transaksi::factory()->count(20)->create([ */
+        /*     'mesin_id' => $mesins->random()->id, */
+        /*     'user_id' => $users->random()->id, */
+        /* ]); */
+        /**/
+        /* foreach ($transaksis as $transaksi) { */
+        /*     Sampah::factory()->count(3)->create([ */
+        /*         'transaksi_id' => $transaksi->id, */
+        /*     ]); */
+        /* } */
     }
 }

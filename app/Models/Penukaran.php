@@ -11,15 +11,25 @@ class Penukaran extends Model
     use HasUuids, HasFactory;
 
     protected $fillable = [
-        'hadiah_id',
         'user_id',
         'alamat',
         'status',
+        'latitude',
+        'longitude',
     ];
 
-    public function hadiah()
+    public function hadiahs()
     {
-        return $this->belongsTo(Hadiah::class);
+        return $this->belongsToMany(Hadiah::class, 'penukaran_hadiah')
+            ->withPivot('kuantitas')
+            ->withTimestamps();
+    }
+
+    public function totalPoin()
+    {
+        return $this->hadiahs->sum(function ($hadiah) {
+            return $hadiah->pivot->kuantitas * $hadiah->poin;
+        });
     }
 
     public function user()

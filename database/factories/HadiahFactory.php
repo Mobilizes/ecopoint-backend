@@ -24,7 +24,7 @@ class HadiahFactory extends Factory
             'poin' => fake()->numberBetween(10, 100),
             'rating' => fake()->randomFloat(2, 0, 5),
             'jumlah_penukaran' => fake()->numberBetween(0, 100),
-            'link_foto' => fake()->imageUrl(640, 480, 'sports', true, 'Hadiah', true),
+            'link_foto' => null,
         ];
     }
 }

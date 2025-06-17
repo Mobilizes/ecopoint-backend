@@ -14,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('penukarans', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
-            $table->foreignUuid('hadiah_id')->constrained('hadiahs');
             $table->foreignUuid('user_id')->constrained('users');
             $table->enum('status', ['Diproses', 'Success', 'Failed'])->default('Diproses');
-            $table->string('alamat');
+            $table->double('latitude');
+            $table->double('longitude');
             $table->timestamps();
         });
     }

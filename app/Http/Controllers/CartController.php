@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Penukaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -122,8 +123,13 @@ class CartController extends Controller
         ]);
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
+        $request->validate([
+            'latitude' => 'required|decimal:1,10',
+            'longitude' => 'required|decimal:1,10',
+        ]);
+
         $user = Auth::user();
         $cart = $user->cart()->firstOrCreate();
 
@@ -145,6 +151,17 @@ class CartController extends Controller
 
         $user->poin -= $cart->totalPoin();
         $user->save();
+
+        $penukaran = new Penukaran();
+        $penukaran->user_id = $user->id;
+        $penukaran->latitude = $request->input('latitude');
+        $penukaran->longitude = $request->input('longitude');
+        $penukaran->save();
+
+        $hadiahs = $cart->hadiahs;
+        foreach ($hadiahs as $hadiah) {
+            $penukaran->hadiahs()->attach($hadiah->id);
+        }
 
         $user->cart->delete();
 

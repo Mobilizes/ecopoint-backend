@@ -22,13 +22,10 @@ class PenukaranController extends Controller
             : $query->get();
 
         $meta = $request->filled('limit') ? [
-            'current_page' => $penukarans->currentPage(),
-            'from' => $penukarans->firstItem(),
+            'page' => $penukarans->currentPage(),
             'per_page' => $penukarans->perPage(),
-            'to' => $penukarans->lastItem(),
-            'next_page_url' => $penukarans->nextPageUrl(),
-            'prev_page_url' => $penukarans->previousPageUrl(),
-            'path' => $penukarans->path(),
+            'max_page' => $penukarans->lastPage(),
+            'count' => $penukarans->total(),
         ] : null;
 
         if ($penukarans == null) {
@@ -45,9 +42,8 @@ class PenukaranController extends Controller
                 'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
                 'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
                 'status' => $penukaran->status,
-                'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
-                'poin_ditukar' => $penukaran->hadiah->poin,
-                'gambar_hadiah' => $penukaran->hadiah->link_foto,
+                'penukarans' => $penukaran->hadiahs,
+                'poin_ditukar' => $penukaran->totalPoin(),
             ];
         });
 

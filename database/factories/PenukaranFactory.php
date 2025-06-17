@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use App\Models\Hadiah;
 use APp\Models\User;
 
 /**
@@ -20,9 +19,9 @@ class PenukaranFactory extends Factory
     public function definition(): array
     {
         return [
-            'hadiah_id' => Hadiah::factory(),
             'user_id' => User::factory(),
-            'alamat' => fake()->address(),
+            'latitude' => fake()->latitude(),
+            'longitude' => fake()->longitude(),
         ];
     }
 }

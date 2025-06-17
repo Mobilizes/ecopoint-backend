@@ -20,7 +20,9 @@ class Hadiah extends Model
 
     public function penukarans()
     {
-        return $this->hasMany(Penukaran::class);
+        return $this->belongsToMany(Hadiah::class, 'penukaran_hadiah')
+            ->withPivot('kuantitas')
+            ->withTimestamps();
     }
 
     public function carts()
