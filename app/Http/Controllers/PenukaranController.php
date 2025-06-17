@@ -42,9 +42,8 @@ class PenukaranController extends Controller
                 'tanggal_penukaran' => $penukaran->created_at->translatedFormat('l, d F Y'),
                 'jam_penukaran' => $penukaran->created_at->translatedFormat('H:i'),
                 'status' => $penukaran->status,
-                'nama_hadiah' => $penukaran->hadiah->nama_hadiah,
-                'poin_ditukar' => $penukaran->hadiah->poin,
-                'gambar_hadiah' => $penukaran->hadiah->link_foto,
+                'penukarans' => $penukaran->hadiahs,
+                'poin_ditukar' => $penukaran->totalPoin(),
             ];
         });
 

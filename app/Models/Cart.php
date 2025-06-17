@@ -6,21 +6,18 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penukaran extends Model
+class Cart extends Model
 {
-    use HasUuids, HasFactory;
+    /** @use HasFactory<\Database\Factories\CartFactory> */
+    use HasFactory, HasUuids;
 
     protected $fillable = [
-        'user_id',
-        'alamat',
-        'status',
-        'latitude',
-        'longitude',
+        'user_id'
     ];
 
     public function hadiahs()
     {
-        return $this->belongsToMany(Hadiah::class, 'penukaran_hadiah')
+        return $this->belongsToMany(Hadiah::class, 'cart_hadiah')
             ->withPivot('kuantitas')
             ->withTimestamps();
     }
@@ -30,10 +27,5 @@ class Penukaran extends Model
         return $this->hadiahs->sum(function ($hadiah) {
             return $hadiah->pivot->kuantitas * $hadiah->poin;
         });
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }

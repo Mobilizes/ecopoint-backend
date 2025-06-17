@@ -2,14 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use APp\Models\User;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Penukaran>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Cart>
  */
-class PenukaranFactory extends Factory
+class CartFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,9 +18,7 @@ class PenukaranFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'latitude' => fake()->latitude(),
-            'longitude' => fake()->longitude(),
+            'user_id' => User::factory()
         ];
     }
 }
