@@ -11,8 +11,14 @@ class Permintaan extends Model
     use HasUuids, HasFactory;
 
     protected $fillable = [
-        'id_mesin',
+        'mesin_id',
         'kode_verifikasi',
+        'status',
+        'daftar_sampah',
+    ];
+
+    protected $casts = [
+        'daftar_sampah' => 'array',
     ];
 
     protected static function boot()
