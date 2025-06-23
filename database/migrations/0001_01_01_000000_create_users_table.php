@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('nama_depan');
             $table->string('nama_belakang')->nullable();
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->integer('total_poin')->default(0);
             $table->integer('poin')->default(0);
             $table->string('link_foto')->nullable();
+            $table->string('provider_name')->nullable();
+            $table->string('provider_id')->nullable();
             $table->timestamps();
         });
 

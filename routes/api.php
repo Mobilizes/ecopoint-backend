@@ -9,11 +9,16 @@ use App\Http\Controllers\HadiahController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\PenukaranController;
+use App\Http\Controllers\SocialNetworkController;
 use App\Http\Controllers\TransaksiController;
 
 Route::middleware('ensure.guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
     Route::post('/register', [RegisteredUserController::class, 'store']);
+
+    Route::get('/{provider}/redirect', [SocialNetworkController::class, 'redirect']);
+    Route::get('/{provider}/callback', [SocialNetworkController::class, 'callback']);
+    Route::post('/{provider}/login', [SocialNetworkController::class, 'login']);
 });
 
 Route::middleware('ensure.auth')->group(function () {
