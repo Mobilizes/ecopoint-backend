@@ -20,12 +20,14 @@ class AuthenticatedSessionController extends Controller
 
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
+                'status' => 'failed',
                 'message' => 'Login gagal',
-                'data' => '',
-            ], 401);
+                'data' => (object) [],
+            ], 400);
         }
 
         return response()->json([
+            'status' => 'success',
             'message' => 'Login sukses',
             'data' => [
                 'user' => Auth::user(),

@@ -20,7 +20,7 @@ class HadiahFactory extends Factory
     {
         return [
             'id' => Str::uuid(),
-            'nama_hadiah' => fake()->word(),
+            'nama_hadiah' => fake()->sentence(),
             'poin' => fake()->numberBetween(10, 100),
             'rating' => fake()->randomFloat(2, 0, 5),
             'jumlah_penukaran' => fake()->numberBetween(0, 100),

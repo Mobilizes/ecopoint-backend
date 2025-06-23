@@ -28,6 +28,8 @@ class User extends Authenticatable
         'poin',
         'total_poin',
         'link_foto',
+        'provider_name',
+        'provider_id',
     ];
 
     /**
