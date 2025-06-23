@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             'nama_depan' => 'Test',
             'nama_belakang' => 'User',
             'email' => 'test@example.com',
+            'poin' => 99999999,
         ]);
 
         $test_hadiahs = Hadiah::factory(100)->create([]);
