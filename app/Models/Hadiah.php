@@ -24,11 +24,4 @@ class Hadiah extends Model
             ->withPivot('kuantitas')
             ->withTimestamps();
     }
-
-    public function carts()
-    {
-        return $this->belongsToMany(Cart::class, 'cart_hadiah')
-            ->withPivot('kuantitas')
-            ->withTimestamps();
-    }
 }

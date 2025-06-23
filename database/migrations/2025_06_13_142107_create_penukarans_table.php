@@ -16,8 +16,9 @@ return new class extends Migration
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->foreignUuid('user_id')->constrained('users');
             $table->enum('status', ['Diproses', 'Success', 'Failed'])->default('Diproses');
-            $table->double('latitude');
-            $table->double('longitude');
+            $table->string('alamat');
+            $table->string('nama_penerima');
+            $table->string('nomor_telepon');
             $table->timestamps();
         });
     }

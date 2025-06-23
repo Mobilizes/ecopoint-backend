@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hadiah;
+use App\Models\Penukaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HadiahController extends Controller
 {
@@ -100,5 +102,79 @@ class HadiahController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function redeem(Request $request)
+    {
+        $request->validate([
+            'address' => 'required|array|min:1',
+            'address.alamat' => 'required|string',
+            'address.nama_penerima' => 'required|string',
+            'address.nomor_telepon' => 'required|string',
+            'cart' => 'required|array|min:1',
+            'cart.*.id' => 'required|uuid|exists:hadiahs,id',
+            'cart.*.kuantitas' => 'required|integer',
+        ]);
+
+        $user = Auth::user();
+
+
+        $hadiahIds = collect($request->cart)->pluck('id')->all();
+
+        $hadiahModels = Hadiah::whereIn('id', $hadiahIds)->get()->keyBy('id');
+
+        $hadiahs = [];
+        $totalPoin = 0;
+
+        foreach ($request->cart as $hadiahReq) {
+            $hadiah = $hadiahModels[$hadiahReq['id']] ?? null;
+
+            if (!$hadiah) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Hadiah tidak ditemukan!',
+                    'data' => (object) [],
+                ], 400);
+            }
+
+            $totalPoin += $hadiah->poin * $hadiahReq['kuantitas'];
+
+            $hadiahs[] = [
+                'model' => $hadiah,
+                'kuantitas' => $hadiahReq['kuantitas'],
+            ];
+        }
+
+        if ($user->poin < $totalPoin) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Total poin tidak mencukupi!',
+                'data' => (object) [],
+            ], 400);
+        }
+
+        $user->poin -= $totalPoin;
+        $user->save();
+
+        $penukaran = new Penukaran();
+        $penukaran->user_id = $user->id;
+        $penukaran->alamat = $request->address['alamat'];
+        $penukaran->nama_penerima = $request->address['nama_penerima'];
+        $penukaran->nomor_telepon = $request->address['nomor_telepon'];
+        $penukaran->save();
+
+        foreach ($hadiahs as $hadiahReq) {
+            $hadiah = $hadiahReq['model'];
+
+            $penukaran->hadiahs()->attach([
+                $hadiah->id => ['kuantitas' => $hadiahReq['kuantitas']],
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Checkout berhasil',
+            'data' => (object) [],
+        ]);
     }
 }

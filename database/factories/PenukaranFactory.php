@@ -20,8 +20,9 @@ class PenukaranFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'latitude' => fake()->latitude(),
-            'longitude' => fake()->longitude(),
+            'alamat' => fake()->address(),
+            'nama_penerima' => fake()->name(),
+            'nomor_telepon' => fake()->phoneNumber(),
         ];
     }
 }

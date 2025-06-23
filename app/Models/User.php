@@ -72,9 +72,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaksi::class);
     }
-
-    public function cart()
-    {
-        return $this->hasOne(Cart::class);
-    }
 }

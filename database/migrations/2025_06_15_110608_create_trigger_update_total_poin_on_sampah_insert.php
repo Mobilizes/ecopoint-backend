@@ -7,7 +7,7 @@ return new class extends Migration
     public function up(): void
     {
         DB::unprepared('
-            CREATE TRIGGER trg_update_total_poin_after_insert
+            CREATE TRIGGER trg_update_total_poin_after_sampah_insert
             AFTER INSERT ON sampahs
             FOR EACH ROW
             BEGIN
@@ -20,6 +20,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_update_total_poin_after_insert');
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_update_total_poin_after_sampah_insert');
     }
 };
