@@ -31,7 +31,7 @@ class PermintaanController extends Controller
     {
         $validated = $request->validate([
             'mesin_id' => 'required|uuid|exists:mesins,id',
-            'daftar_sampah'  => 'nullable|array',                    // ✅ array of IDs
+            'daftar_sampah'  => 'nullable|array',
             'daftar_sampah.*'=> 'uuid|exists:sampahs,id',
         ]);
 

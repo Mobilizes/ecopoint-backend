@@ -7,44 +7,61 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Permintaan;
 use App\Models\Transaksi;
+use App\Models\Sampah;
 
 class ClaimController extends Controller
 {
     public function claim(Request $request)
     {
-        $request->validate([
-            'id_mesin' => 'required|uuid|exists:mesins,id',
-            'kode_verifikasi' => 'required|integer|exists:permintaans,kode_verifikasi',
-            'sampahs' => 'required|array|min:1',
-            'sampahs.*.kategori_sampah' => 'required|in:plastik,kertas,kaca,organik,logam,lainnya',
-            'sampahs.*.berat_sampah' => 'required|numeric|min:0.01',
-            'sampahs.*.poin' => 'required|integer|min:1',
-        ]);
-
         $user = Auth::user();
 
-        $transaksi = new Transaksi();
-        $transaksi->mesin_id = $request->mesin_id;
-        $transaksi->user_id = $user->id;
 
-        foreach ($request->sampahs as $sampah) {
-            $user->sampahs()->create([
-                'transaksi_id' => $transaksi->id,
-                'kategori_sampah' => $sampah['kategori_sampah'],
-                'berat_sampah' => $sampah['berat_sampah'],
-                'poin' => $sampah['poin'],
-            ]);
+        $validated = $request->validate([
+            'token' => ['required', 'regex:/^\d{5}$/'],
+        ]);
+
+        $permintaan = Permintaan::where('kode_verifikasi', $validated['token'])
+            ->where('status', 'pending')
+            ->first();
+
+            if (!$permintaan) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Permintaan dengan token tersebut tidak ditemukan atau sudah tidak aktif.',
+                ], 404);
+            }
+
+        $totalPoin = 0;
+        if (is_array($permintaan->daftar_sampah)) {
+            $sampahs = Sampah::whereIn('id', $permintaan->daftar_sampah)->get();
+
+            foreach ($sampahs as $sampah) {
+                $totalPoin += $sampah->poin ?? 0;
+            }
         }
 
-        $permintaan = Permintaan::where('kode_verifikasi', $request->kode_verifikasi)
-            ->where('mesin_id', $request->id_mesin)
-            ->first();
-        $permintaan->delete();
+        $transaksi = Transaksi::create([
+            'user_id' => $user->id,
+            'mesin_id' => $permintaan->mesin_id,
+            'total_poin' => $totalPoin,
+        ]);
+        if (is_array($permintaan->daftar_sampah)) {
+            Sampah::whereIn('id', $permintaan->daftar_sampah)
+                ->update(['transaksi_id' => $transaksi->id]);
+        }
+
+        $permintaan->status = 'confirmed';
+        $permintaan->save();
+
+        $response = [
+            'permintaan' => $permintaan,
+            'transaksi' => $transaksi,
+        ];
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Berhasil mengklaim sampah.',
-            'data' => '',
-        ], 201);
+            'message' => 'Permintaan berhasil dikonfirmasi',
+            'data' => $response,
+        ]);
     }
 }
