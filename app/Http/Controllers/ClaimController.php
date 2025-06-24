@@ -15,7 +15,6 @@ class ClaimController extends Controller
     {
         $user = Auth::user();
 
-
         $validated = $request->validate([
             'token' => ['required', 'regex:/^\d{5}$/'],
         ]);
@@ -24,31 +23,21 @@ class ClaimController extends Controller
             ->where('status', 'pending')
             ->first();
 
-            if (!$permintaan) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Permintaan dengan token tersebut tidak ditemukan atau sudah tidak aktif.',
-                ], 404);
-            }
-
-        $totalPoin = 0;
-        if (is_array($permintaan->daftar_sampah)) {
-            $sampahs = Sampah::whereIn('id', $permintaan->daftar_sampah)->get();
-
-            foreach ($sampahs as $sampah) {
-                $totalPoin += $sampah->poin ?? 0;
-            }
+        if (!$permintaan) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Permintaan dengan token tersebut tidak ditemukan atau sudah tidak aktif.',
+            ], 404);
         }
 
         $transaksi = Transaksi::create([
             'user_id' => $user->id,
             'mesin_id' => $permintaan->mesin_id,
-            'total_poin' => $totalPoin,
         ]);
-        if (is_array($permintaan->daftar_sampah)) {
-            Sampah::whereIn('id', $permintaan->daftar_sampah)
-                ->update(['transaksi_id' => $transaksi->id]);
-        }
+
+        Sampah::factory(2)->create([
+            'transaksi_id' => $transaksi->id,
+        ]);
 
         $permintaan->status = 'confirmed';
         $permintaan->save();

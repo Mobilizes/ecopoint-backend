@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('permintaans', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->foreignUuid('mesin_id')->constrained('mesins');
-            $table->string('kode_verifikasi', 5)->unique();
+            $table->string('kode_verifikasi', 5);
             $table->timestamps();
         });
     }
