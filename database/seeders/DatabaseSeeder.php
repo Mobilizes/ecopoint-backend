@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         foreach ($test_penukaran as $penukaran) {
-            $hadiahs = $test_hadiahs->random(rand(1, 5));
+            $hadiahs = $test_hadiahs->random(3);
 
             foreach ($hadiahs as $hadiah) {
                 $penukaran->hadiahs()->attach([
@@ -43,8 +43,9 @@ class DatabaseSeeder extends Seeder
         $test_mesins = Mesin::factory(3)->create([]);
 
         foreach ($test_mesins as $test_mesin) {
-            $test_permintaan = Permintaan::factory(5)->create([
+            $test_permintaan = Permintaan::factory()->create([
                 'mesin_id' => $test_mesin->id,
+                'kode_verifikasi' => 87142,
             ]);
 
             $test_transaksis = Transaksi::factory(10)->create([
