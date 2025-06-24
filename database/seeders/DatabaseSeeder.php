@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
 
         /* $mesins = Mesin::factory()->count(5)->create(); */
         /**/
-        /* $users = User::factory()->count(15)->create(); */
+        $users = User::factory()->count(8)->create();
         /* $hadiahs = Hadiah::factory()->count(10)->create(); */
         /**/
         /* foreach ($users as $user) { */
