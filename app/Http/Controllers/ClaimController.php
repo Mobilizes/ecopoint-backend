@@ -39,8 +39,8 @@ class ClaimController extends Controller
             'transaksi_id' => $transaksi->id,
         ]);
 
-        $permintaan->status = 'confirmed';
-        $permintaan->save();
+        /* $permintaan->status = 'confirmed'; */
+        /* $permintaan->save(); */
 
         $response = [
             'permintaan' => $permintaan,
