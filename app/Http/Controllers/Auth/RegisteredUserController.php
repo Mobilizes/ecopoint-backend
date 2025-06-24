@@ -31,6 +31,8 @@ class RegisteredUserController extends Controller
             'nama_depan' => $request['nama_depan'],
             'nama_belakang' => $request['nama_belakang'],
             'email' => $request->email,
+            'poin' => 200,
+            'total_poin' => 200,
             'password' => Hash::make($request->string('password')),
         ]);
 
