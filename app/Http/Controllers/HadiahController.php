@@ -165,10 +165,14 @@ class HadiahController extends Controller
 
         foreach ($hadiahs as $hadiahReq) {
             $hadiah = $hadiahReq['model'];
+            $kuantitas = $hadiahReq['kuantitas'];
 
             $penukaran->hadiahs()->attach([
-                $hadiah->id => ['kuantitas' => $hadiahReq['kuantitas']],
+                $hadiah->id => ['kuantitas' => $kuantitas],
             ]);
+
+            $hadiah->jumlah_penukaran += $kuantitas;
+            $hadiah->save();
         }
 
         return response()->json([
