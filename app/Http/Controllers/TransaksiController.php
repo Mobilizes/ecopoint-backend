@@ -42,7 +42,7 @@ class TransaksiController extends Controller
                 'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
                 'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
                 'nama_mesin' => $transaksi->mesin->nama_mesin,
-                'total_poin' => $transaksi->total_poin,
+                'total_poin' => $transaksi->totalPoin(),
                 'sampah' => $transaksi->sampahs,
             ];
         });
@@ -99,7 +99,7 @@ class TransaksiController extends Controller
             'tanggal_transaksi' => $transaksi->created_at->translatedFormat('l, d F Y'),
             'jam_transaksi' => $transaksi->created_at->translatedFormat('H:i'),
             'nama_mesin' => $transaksi->mesin->nama_mesin,
-            'total_poin' => $transaksi->total_poin,
+            'total_poin' => $transaksi->totalPoin(),
             'sampah' => $transaksi->sampahs,
         ];
 

@@ -13,7 +13,6 @@ class Transaksi extends Model
     protected $fillable = [
         'mesin_id',
         'user_id',
-        'total_poin',
     ];
 
     public function mesin()
