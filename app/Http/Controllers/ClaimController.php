@@ -42,6 +42,11 @@ class ClaimController extends Controller
         /* $permintaan->status = 'confirmed'; */
         /* $permintaan->save(); */
 
+        $total_poin = $transaksi->totalPoin();
+        $user->total_poin += $total_poin;
+        $user->poin += $total_poin;
+        $user->save();
+
         $response = [
             'permintaan' => $permintaan,
             'transaksi' => $transaksi,

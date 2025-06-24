@@ -30,4 +30,9 @@ class Transaksi extends Model
     {
         return $this->hasMany(Sampah::class);
     }
+
+    public function totalPoin()
+    {
+        return $this->sampahs->sum('poin');
+    }
 }
