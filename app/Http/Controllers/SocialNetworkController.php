@@ -45,6 +45,8 @@ class SocialNetworkController extends Controller
                 'link_foto' => $providerUser->getAvatar(),
                 'provider_name' => $provider,
                 'provider_id' => $providerUser->getId(),
+                'total_poin' => 200,
+                'poin' => 200,
             ]);
         }
 
