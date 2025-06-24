@@ -15,7 +15,7 @@ class TransaksiController extends Controller
     {
         $user = Auth::user();
 
-        $query = $user->transaksis()->with(['mesin', 'sampahs']);
+        $query = $user->transaksis()->with(['mesin', 'sampahs'])->orderBy('created_at', 'desc');
 
         $transaksis = $request->filled('limit')
             ? $query->paginate($request->limit)

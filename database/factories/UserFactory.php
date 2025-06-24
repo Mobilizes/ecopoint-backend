@@ -23,7 +23,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $poin = fake()->numberBetween(0, 500);
+        $poin = fake()->numberBetween(150, 500);
 
         return [
             'id' => Str::uuid(),

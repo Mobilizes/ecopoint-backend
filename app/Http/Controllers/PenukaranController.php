@@ -15,7 +15,7 @@ class PenukaranController extends Controller
     {
         $user = Auth::user();
 
-        $query = $user->penukarans();
+        $query = $user->penukarans()->orderBy('created_at', 'desc');
 
         $penukarans = $request->filled('limit')
             ? $query->paginate($request->limit)
