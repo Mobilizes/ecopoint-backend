@@ -13,11 +13,8 @@ class LeaderboardController extends Controller
         $user = Auth::user();
         $limit = 10;
 
-        // Get top 10 users ordered by poin
-        $topUsers = User::orderByDesc('poin')->take($limit)->get();
-
         // Assign real ranks to top 10
-        $rankedTopUsers = User::orderByDesc('poin')
+        $rankedTopUsers = User::orderByDesc('total_poin')
             ->take($limit + 100) // Extra buffer to calculate rank if needed
             ->get()
             ->values()
